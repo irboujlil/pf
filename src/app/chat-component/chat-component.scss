@@ -1,0 +1,171 @@
+/* chat.component.css */
+.chat-container {
+    
+    //background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    
+    background-color: #262626;
+    //padding: 8px 16px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+    
+    
+    //
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 90%; /* Responsive width */
+    margin: 20px auto; /* Center align with margin */
+    padding: 10px;
+}
+
+:host {
+    background-color: #121212; /* Dark background */
+    color: #f1f1f1; /* Light text color */
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  h1 {
+    color: #4CAF50; /* Bright accent color */
+  }
+  
+  .main {
+    background-color: #1a1a1a; /* Slightly lighter shade for content area */
+  }
+  
+  .typing-indicator span {
+    background-color: #4CAF50; /* Accent color for typing indicator */
+  }
+  
+  .icon-btn {
+    color: #4CAF50; /* Accent color for icons */
+  }
+  
+  /* Add more custom styles as needed */
+  
+
+/* chat.component.css */
+.chat-image {
+    max-width: 100px; /* Adjust as needed */
+    max-height: 100px; /* Adjust as needed */
+    border-radius: 10px;
+    align-self: flex-end; /* This ensures images align to the right if sent */
+    margin-left: auto;
+}
+
+
+/* Continue with existing styles */
+
+
+/* chat.component.css */
+.messages-container {
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    max-height: 300px;
+    overflow-y: auto;
+    max-width: 90%;
+    margin: auto;
+    background-color: #262626;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .message {
+    display: block;
+    max-width: fit-content; /* Ensures the width is only as long as the content */
+    margin: 5px;
+    padding: 10px;
+    border-radius: 20px;
+    word-wrap: break-word;
+  }
+  
+  .sent {
+    background-color: #002FA7;
+    color: white;
+    align-self: flex-end; /* Align sent messages to the right */
+    margin-left: auto;
+  }
+  
+  .received {
+    background-color: #FFE194;
+    color: black;
+    align-self: flex-start; /* Align received messages to the left */
+    margin-right: auto;
+  }
+  
+
+.messages-container::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+/* chat.component.css */
+.typing-indicator {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 10px;
+}
+
+.typing-indicator span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    //background-color: #888;
+    background-color: #4CAF50; 
+    margin-right: 3px;
+    animation: blink 1.4s infinite ease-in-out both;
+}
+
+.typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+.typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes blink {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1.0); }
+}
+
+/* Continue with existing styles */
+
+
+/* Continue with existing styles for .chat-container, etc. */
+
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    font-size: 18px;
+    //color: #555;
+    color: #4CAF50;
+}
+
+.text-input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    padding-left: 15px;
+    font-size: 16px;
+    color: white;
+    background-color: #262626;
+}
+
+.text-input::placeholder {
+    color: #aaa;
+}
+
+/* Adjustments for better mobile responsiveness */
+@media (max-width: 768px) {
+    .messages-container, .chat-container {
+      max-width: 100%;
+    }
+  
+    .chat-container input[type="text"] {
+      flex-grow: 1; /* Allow input to fill space */
+    }
+  }
