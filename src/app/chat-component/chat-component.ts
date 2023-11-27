@@ -7,7 +7,7 @@ import { DataService } from '../service/data.service';
   //standalone: true,
   //imports: [CommonModule],
   templateUrl: './chat-component.html',
-  styleUrl: './chat-component.scss'
+  styleUrls: ['./chat-component.scss']
 })
 export class ChatComponent {
 
