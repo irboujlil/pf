@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../service/data.service';
 import jsPDF from 'jspdf';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-chat-component',
@@ -17,7 +18,7 @@ export class ChatComponent {
   isTyping: boolean = false;
   file: any;
 
-  constructor(private openAIService: DataService) { }
+  constructor(private openAIService: DataService, private sanitizer: DomSanitizer) { }
 
   sendMessage() {
     
@@ -101,23 +102,21 @@ export class ChatComponent {
 
   handlePDF(response: any) {
     const pdf = new jsPDF();
-  pdf.text(response, 10, 10);
-  
-  // Create a Blob from the PDF data
-  const pdfBlob = pdf.output('blob');
-  
-  // Create an object URL for the Blob
-  const pdfUrl = URL.createObjectURL(pdfBlob);
+    pdf.text(response, 10, 10);
+    const pdfBlob = pdf.output('blob');
+    const pdfUrl = URL.createObjectURL(pdfBlob);
 
-  // Use the object URL for the href attribute
-  this.messages.push({
-    content: pdfUrl,
-    sent: false,
-    isPdf: true,
-    fileName: 'response.pdf'
-  });
+    // Sanitize the blob URL
+    const sanitizedUrl = this.sanitizer.bypassSecurityTrustUrl(pdfUrl);
 
-  this.isTyping = false;
+    this.messages.push({
+      content: sanitizedUrl,
+      sent: false,
+      isPdf: true,
+      fileName: 'response.pdf'
+    });
+
+    this.isTyping = false;
   }
   
   

@@ -12,7 +12,7 @@
         </div>
         <div *ngIf="msg.isPdf">
             <a [href]="msg.content" [download]="msg.fileName">Download PDF</a>
-        </div>
+          </div>
     </div>
     <div class="typing-indicator" *ngIf="isTyping">
         <span></span><span></span><span></span> <!-- Three dots for the indicator -->
