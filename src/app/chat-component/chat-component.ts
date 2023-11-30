@@ -83,14 +83,9 @@ export class ChatComponent {
             this.isTyping = true;
             // Add each image to the messages array
             this.openAIService.sendFile(fileName, base64).subscribe((response: any) => {
-              const pdf = new jsPDF();
-              pdf.text(response, 10, 10);
-              const pdfBase64 = pdf.output('datauristring');
-              this.messages.push({ content: pdfBase64, sent: false, isImage: false, isPDF: true });
-              //console.log(response)
-              this.isTyping = false
+              this.handlePDF(response);
             })
-            this.messages.push({ content: base64, sent: true, isImage: true });
+            this.messages.push({ content: "Analyzing file...", sent: true, isImage: false });
             // Send each image to the server
             // ...
           }).catch(error => {
@@ -102,6 +97,24 @@ export class ChatComponent {
         }
       });
     }
+  }
+
+  handlePDF(response: any) {
+    const pdf = new jsPDF();
+    pdf.text(response, 10, 10);
+    const pdfBase64 = pdf.output('datauristring');
+
+    // Extract only the base64 part of the data URL
+    const base64Data = pdfBase64.split(',')[1];
+
+    this.messages.push({
+      content: base64Data,
+      sent: false,
+      isPdf: true,
+      fileName: 'response.pdf' // Add a file name for the PDF
+    });
+
+    this.isTyping = false;
   }
   
   
