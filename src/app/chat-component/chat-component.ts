@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../service/data.service';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-chat-component',
@@ -82,7 +83,10 @@ export class ChatComponent {
             this.isTyping = true;
             // Add each image to the messages array
             this.openAIService.sendFile(fileName, base64).subscribe((response: any) => {
-              this.messages.push({ content: response, sent: false, isImage: false });
+              const pdf = new jsPDF();
+              pdf.text(response, 10, 10);
+              const pdfBase64 = pdf.output('datauristring');
+              this.messages.push({ content: pdfBase64, sent: false, isImage: false, isPDF: true });
               //console.log(response)
               this.isTyping = false
             })

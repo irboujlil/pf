@@ -10,6 +10,9 @@
         <div *ngIf="!msg.isImage">
             {{ msg.content }}
         </div>
+        <div *ngIf="msg.isPdf">
+            <a [href]="msg.content" download="response.pdf">Download PDF</a>
+          </div>
     </div>
     <div class="typing-indicator" *ngIf="isTyping">
         <span></span><span></span><span></span> <!-- Three dots for the indicator -->

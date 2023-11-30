@@ -12,7 +12,7 @@ const app = express();
 
 app.use(requireHTTPS);
 app.use(cors({
-    origin: 'https://pocket-pf-test-3c2c45652b6a.herokuapp.com' // or '*' for allowing all origins
+    origin: '*' // or '*' for allowing all origins
 }));
 app.use(express.static('./dist/angular-heroku'));
 
@@ -20,4 +20,7 @@ app.get('/*', (req, res) =>
     res.sendFile('index.html', {root: 'dist/angular-heroku/'}),
 );
 
-app.listen(process.env.PORT || 8080);
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
