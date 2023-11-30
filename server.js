@@ -12,7 +12,7 @@ const app = express();
 
 app.use(requireHTTPS);
 app.use(cors({
-    origin: '*' // or '*' for allowing all origins
+    origin: 'https://pocket-pf-test-3c2c45652b6a.herokuapp.com' // or '*' for allowing all origins
 }));
 app.use(express.static('./dist/angular-heroku'));
 
