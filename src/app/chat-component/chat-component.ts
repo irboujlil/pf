@@ -101,20 +101,23 @@ export class ChatComponent {
 
   handlePDF(response: any) {
     const pdf = new jsPDF();
-    pdf.text(response, 10, 10);
-    const pdfBase64 = pdf.output('datauristring');
+  pdf.text(response, 10, 10);
+  
+  // Create a Blob from the PDF data
+  const pdfBlob = pdf.output('blob');
+  
+  // Create an object URL for the Blob
+  const pdfUrl = URL.createObjectURL(pdfBlob);
 
-    // Extract only the base64 part of the data URL
-    const base64Data = pdfBase64.split(',')[1];
+  // Use the object URL for the href attribute
+  this.messages.push({
+    content: pdfUrl,
+    sent: false,
+    isPdf: true,
+    fileName: 'response.pdf'
+  });
 
-    this.messages.push({
-      content: base64Data,
-      sent: false,
-      isPdf: true,
-      fileName: 'response.pdf' // Add a file name for the PDF
-    });
-
-    this.isTyping = false;
+  this.isTyping = false;
   }
   
   
