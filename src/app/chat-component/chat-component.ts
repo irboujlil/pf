@@ -110,10 +110,10 @@ export class ChatComponent {
     const sanitizedUrl = this.sanitizer.bypassSecurityTrustUrl(pdfUrl);
 
     this.messages.push({
-      content: "Questions.pdf",
+      content: sanitizedUrl,
       sent: false,
       isPdf: true,
-      fileName: 'questions.pdf'
+      fileName: 'Questions.pdf'
     });
 
     this.isTyping = false;
