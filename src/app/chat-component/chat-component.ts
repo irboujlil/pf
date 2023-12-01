@@ -91,10 +91,12 @@ export class ChatComponent {
             // ...
           }).catch(error => {
             console.error("Error during file conversion: ", error);
+            this.messages.push({ content: `Error during file conversion: ${error.message}`, sent: false, isImage: false });
           });
         }
         else {
           console.log("File selected is not an image");
+          this.messages.push({ content: `File selected is not an image or PDF`, sent: false, isImage: false });
         }
       });
     }
