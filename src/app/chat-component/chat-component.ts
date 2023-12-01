@@ -106,8 +106,8 @@ export class ChatComponent {
     
 
     const pdf = new jsPDF();
-    const pdfBlob = pdf.output('blob');
-    const pdfUrl = URL.createObjectURL(pdfBlob);
+    //const pdfBlob = pdf.output('blob');
+    //const pdfUrl = URL.createObjectURL(pdfBlob);
 
     // Set options for font size and maximum width.
     const fontSize = 10;
@@ -125,7 +125,8 @@ export class ChatComponent {
         pdf.text(line, x, y);
         y += lineHeight;
     });
-
+    const pdfBlob = pdf.output('blob');
+    const pdfUrl = URL.createObjectURL(pdfBlob);
     // Sanitize the blob URL
     const sanitizedUrl = this.sanitizer.bypassSecurityTrustUrl(pdfUrl);
 
