@@ -105,13 +105,16 @@ export class ChatComponent {
     const pageWidth = pdf.internal.pageSize.getWidth();
     const logoSize = 100; // Size of the logo
     const logoMargin = 15; // Margin from top and left
-    const textMargin = 20; // Margin for the text
+    const textMargin = 15; // Margin for the text
+    const desiredHeight = 30; // Set the desired height for the logo
+    const aspectRatio = 1920 / 1080; // Aspect ratio of the original image
+    const desiredWidth = desiredHeight * aspectRatio; 
     const textStartY = logoMargin + logoSize + 10; // Start Y position for text, adjusted for logo
 
     // Optionally add a round logo in the top-left corner
     // The logo should be pre-cropped to a circle with a transparent background
     const logoData = '../assets/circleOwl.png'; // Replace with actual base64 data of the logo
-    pdf.addImage(logoData, 'PNG', logoMargin, logoMargin, logoSize, logoSize);
+    pdf.addImage(logoData, 'PNG', logoMargin, logoMargin, desiredWidth, desiredHeight);
 
     // Set up styles for a modern look
     pdf.setFont('helvetica', 'bold');
