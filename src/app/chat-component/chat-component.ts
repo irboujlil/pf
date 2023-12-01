@@ -103,7 +103,7 @@ export class ChatComponent {
   handlePDF(response: any) {
     const pdf = new jsPDF();
     const pageWidth = pdf.internal.pageSize.getWidth();
-    const logoSize = 50; // Size of the logo
+    const logoSize = 100; // Size of the logo
     const logoMargin = 15; // Margin from top and left
     const textMargin = 20; // Margin for the text
     const textStartY = logoMargin + logoSize + 10; // Start Y position for text, adjusted for logo
