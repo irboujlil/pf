@@ -103,30 +103,43 @@ export class ChatComponent {
   handlePDF(response: any) {
     const pdf = new jsPDF();
     
-    // Define the margins and page height
-    const margins = { top: 20, bottom: 20 };
-    const pageHeight = pdf.internal.pageSize.height;
-
-    // Set options for font size and maximum width
-    const fontSize = 10;
-    pdf.setFontSize(fontSize);
-    const maxWidth = 180; // Set this to the width of your writable area
-    const lineHeight = 1.2 * fontSize; // Line height is usually 120% of font size
-    const x = 20; // X position
-    let y = margins.top; // Initial Y position
+    // Set up styles
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(16);
+    pdf.setTextColor(40); // Dark gray
+    
+    // Add a title with some padding and a bottom border
+    pdf.text('Critical Points:', 20, 20);
+    pdf.setDrawColor(0);
+    pdf.setLineWidth(0.5);
+    pdf.line(20, 25, pdf.internal.pageSize.width - 20, 25); // Draw a line
+    
+    // Reset font for the content
+    pdf.setFont('times', 'normal');
+    pdf.setFontSize(12);
+    pdf.setTextColor(0); // Black color
+    
+    const lineHeight = 1.2 * pdf.getFontSize(); // Line height
+    let y = 30; // Y position after the title and line
 
     // Split the response into lines of a maximum width
-    const lines = pdf.splitTextToSize(response, maxWidth);
+    const lines = pdf.splitTextToSize(response, 170); // Assuming a margin of 20 each side
 
     // Loop through each line and add it to the document
-    lines.forEach((line) => {
-        // Check if the line fits on the page, add a new page if it doesn't
-        if ((y + lineHeight) > (pageHeight - margins.bottom)) {
+    lines.forEach((line, index) => {
+        // Add new page if the content exceeds the page height
+        if ((y + lineHeight) > (pdf.internal.pageSize.height - 20)) {
             pdf.addPage();
-            y = margins.top; // Reset Y position to the top for the new page
+            y = 20; // Reset Y position to the top for the new page
         }
 
-        pdf.text(line, x, y);
+        // Alternate background for better readability
+        if (index % 2 === 0) {
+            pdf.setFillColor('240'); // Light gray
+            pdf.rect(20, y - 10, pdf.internal.pageSize.width - 40, lineHeight, 'F');
+        }
+
+        pdf.text(line, 20, y);
         y += lineHeight; // Increment Y position for next line
     });
 
