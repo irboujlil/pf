@@ -103,17 +103,20 @@ export class ChatComponent {
   handlePDF(response: any) {
     const pdf = new jsPDF();
     const pageWidth = pdf.internal.pageSize.getWidth();
-    const logoSize = 100; // Size of the logo
-    const logoMargin = 15; // Margin from top and left
-    const textMargin = 15; // Margin for the text
     const desiredHeight = 30; // Set the desired height for the logo
     const aspectRatio = 1920 / 1080; // Aspect ratio of the original image
-    const desiredWidth = desiredHeight * aspectRatio; 
-    const textStartY = logoMargin + 50 + 10; // Start Y position for text, adjusted for logo
+    const desiredWidth = desiredHeight * aspectRatio;
+    const logoMargin = 15; // Margin from top and left
+    const textMargin = 15; // Margin for the text
+
+    // Calculate the Y position for the start of the text, adjust as necessary
+    // Here, we assume the logo's bottom edge is at `logoMargin + desiredHeight`
+    // and we add a small margin of 10 units below the logo
+    const textStartY = logoMargin + desiredHeight + 10;
 
     // Optionally add a round logo in the top-left corner
     // The logo should be pre-cropped to a circle with a transparent background
-    const logoData = '../assets/circleOwl.png'; // Replace with actual base64 data of the logo
+    const logoData = '../assets/circleOwl.png'; // Path to the logo image
     pdf.addImage(logoData, 'PNG', logoMargin, logoMargin, desiredWidth, desiredHeight);
 
     // Set up styles for a modern look
@@ -132,7 +135,7 @@ export class ChatComponent {
     // Define maximum width for text based on page width and margins
     const maxWidth = pageWidth - (textMargin * 2);
     const lineHeight = 1.2 * pdf.getFontSize(); // Line height
-    let y = textStartY + 10; // Initial Y position for the body, adjusted below the title
+    let y = textStartY + lineHeight; // Adjusted Y position for the body text
 
     // Split the response into lines of a maximum width
     const lines = pdf.splitTextToSize(response, maxWidth);
