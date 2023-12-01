@@ -102,7 +102,7 @@ export class ChatComponent {
 
   handlePDF(response: any) {
     const pdf = new jsPDF();
-    pdf.text(response, 10, 10);
+    pdf.text(response, 20, 20);
     const pdfBlob = pdf.output('blob');
     const pdfUrl = URL.createObjectURL(pdfBlob);
 
