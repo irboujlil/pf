@@ -101,40 +101,46 @@ export class ChatComponent {
   }
 
   handlePDF(response: any) {
-    //const pdf = new jsPDF();
-    //pdf.text(response, 20, 20);
-    
-
     const pdf = new jsPDF();
-    //const pdfBlob = pdf.output('blob');
-    //const pdfUrl = URL.createObjectURL(pdfBlob);
+    
+    // Define the margins and page height
+    const margins = { top: 20, bottom: 20 };
+    const pageHeight = pdf.internal.pageSize.height;
 
-    // Set options for font size and maximum width.
+    // Set options for font size and maximum width
     const fontSize = 10;
     pdf.setFontSize(fontSize);
     const maxWidth = 180; // Set this to the width of your writable area
     const lineHeight = 1.2 * fontSize; // Line height is usually 120% of font size
     const x = 20; // X position
-    let y = 20; // Initial Y position
+    let y = margins.top; // Initial Y position
 
-    // Split the response into lines of a maximum width.
+    // Split the response into lines of a maximum width
     const lines = pdf.splitTextToSize(response, maxWidth);
 
-    // Add each line to the PDF, increasing `y` each time.
+    // Loop through each line and add it to the document
     lines.forEach((line) => {
+        // Check if the line fits on the page, add a new page if it doesn't
+        if ((y + lineHeight) > (pageHeight - margins.bottom)) {
+            pdf.addPage();
+            y = margins.top; // Reset Y position to the top for the new page
+        }
+
         pdf.text(line, x, y);
-        y += lineHeight;
+        y += lineHeight; // Increment Y position for next line
     });
+
     const pdfBlob = pdf.output('blob');
     const pdfUrl = URL.createObjectURL(pdfBlob);
+
     // Sanitize the blob URL
     const sanitizedUrl = this.sanitizer.bypassSecurityTrustUrl(pdfUrl);
 
     this.messages.push({
-      content: sanitizedUrl,
-      sent: false,
-      isPdf: true,
-      fileName: 'Questions.pdf'
+        content: sanitizedUrl,
+        sent: false,
+        isPdf: true,
+        fileName: 'Questions.pdf'
     });
 
     this.isTyping = false;
