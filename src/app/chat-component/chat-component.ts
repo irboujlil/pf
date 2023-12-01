@@ -103,24 +103,27 @@ export class ChatComponent {
   handlePDF(response: any) {
     const pdf = new jsPDF();
     
-    // Set up styles
+    // Set up styles for a modern look
     pdf.setFont('helvetica', 'bold');
     pdf.setFontSize(16);
     pdf.setTextColor(40); // Dark gray
     
+    // Optionally add a logo in the top-left corner
+    
+    // The dimensions for the image might need to be adjusted
+    pdf.addImage('../assets/owlPhoto.png', 'PNG', 10, 10, 25, 25);
+    
+    
     // Add a title with some padding and a bottom border
     pdf.text('Critical Points:', 20, 20);
-    pdf.setDrawColor(0);
-    pdf.setLineWidth(0.5);
-    pdf.line(20, 25, pdf.internal.pageSize.width - 20, 25); // Draw a line
     
     // Reset font for the content
-    pdf.setFont('times', 'normal');
+    pdf.setFont('helvetica', 'normal');
     pdf.setFontSize(12);
     pdf.setTextColor(0); // Black color
     
     const lineHeight = 1.2 * pdf.getFontSize(); // Line height
-    let y = 30; // Y position after the title and line
+    let y = 40; // Y position after the title and line
 
     // Split the response into lines of a maximum width
     const lines = pdf.splitTextToSize(response, 170); // Assuming a margin of 20 each side
@@ -131,12 +134,6 @@ export class ChatComponent {
         if ((y + lineHeight) > (pdf.internal.pageSize.height - 20)) {
             pdf.addPage();
             y = 20; // Reset Y position to the top for the new page
-        }
-
-        // Alternate background for better readability
-        if (index % 2 === 0) {
-            pdf.setFillColor('240'); // Light gray
-            pdf.rect(20, y - 10, pdf.internal.pageSize.width - 40, lineHeight, 'F');
         }
 
         pdf.text(line, 20, y);
