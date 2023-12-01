@@ -101,10 +101,30 @@ export class ChatComponent {
   }
 
   handlePDF(response: any) {
+    //const pdf = new jsPDF();
+    //pdf.text(response, 20, 20);
+    
+
     const pdf = new jsPDF();
-    pdf.text(response, 20, 20);
     const pdfBlob = pdf.output('blob');
     const pdfUrl = URL.createObjectURL(pdfBlob);
+
+    // Set options for font size and maximum width.
+    const fontSize = 10;
+    pdf.setFontSize(fontSize);
+    const maxWidth = 180; // Set this to the width of your writable area
+    const lineHeight = 1.2 * fontSize; // Line height is usually 120% of font size
+    const x = 20; // X position
+    let y = 20; // Initial Y position
+
+    // Split the response into lines of a maximum width.
+    const lines = pdf.splitTextToSize(response, maxWidth);
+
+    // Add each line to the PDF, increasing `y` each time.
+    lines.forEach((line) => {
+        pdf.text(line, x, y);
+        y += lineHeight;
+    });
 
     // Sanitize the blob URL
     const sanitizedUrl = this.sanitizer.bypassSecurityTrustUrl(pdfUrl);
