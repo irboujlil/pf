@@ -109,7 +109,7 @@ export class ChatComponent {
     const desiredHeight = 30; // Set the desired height for the logo
     const aspectRatio = 1920 / 1080; // Aspect ratio of the original image
     const desiredWidth = desiredHeight * aspectRatio; 
-    const textStartY = logoMargin + logoSize + 10; // Start Y position for text, adjusted for logo
+    const textStartY = logoMargin + 50 + 10; // Start Y position for text, adjusted for logo
 
     // Optionally add a round logo in the top-left corner
     // The logo should be pre-cropped to a circle with a transparent background
