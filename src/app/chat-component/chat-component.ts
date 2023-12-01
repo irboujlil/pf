@@ -102,41 +102,47 @@ export class ChatComponent {
 
   handlePDF(response: any) {
     const pdf = new jsPDF();
-    
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const logoSize = 30; // Size of the logo
+    const logoMargin = 15; // Margin from top and left
+    const textMargin = 20; // Margin for the text
+    const textStartY = logoMargin + logoSize + 10; // Start Y position for text, adjusted for logo
+
+    // Optionally add a round logo in the top-left corner
+    // The logo should be pre-cropped to a circle with a transparent background
+    const logoData = '../assets/circleOwl.png'; // Replace with actual base64 data of the logo
+    pdf.addImage(logoData, 'PNG', logoMargin, logoMargin, logoSize, logoSize);
+
     // Set up styles for a modern look
     pdf.setFont('helvetica', 'bold');
     pdf.setFontSize(16);
     pdf.setTextColor(40); // Dark gray
-    
-    // Optionally add a logo in the top-left corner
-    
-    // The dimensions for the image might need to be adjusted
-    pdf.addImage('../assets/owlPhoto.png', 'PNG', 10, 10, 25, 25);
-    
-    
-    // Add a title with some padding and a bottom border
-    pdf.text('Critical Points:', 20, 20);
-    
+
+    // Add a title with some padding below the logo
+    pdf.text('Critical Points:', logoMargin, textStartY);
+
     // Reset font for the content
     pdf.setFont('helvetica', 'normal');
     pdf.setFontSize(12);
     pdf.setTextColor(0); // Black color
-    
+
+    // Define maximum width for text based on page width and margins
+    const maxWidth = pageWidth - (textMargin * 2);
     const lineHeight = 1.2 * pdf.getFontSize(); // Line height
-    let y = 40; // Y position after the title and line
+    let y = textStartY + 10; // Initial Y position for the body, adjusted below the title
 
     // Split the response into lines of a maximum width
-    const lines = pdf.splitTextToSize(response, 170); // Assuming a margin of 20 each side
+    const lines = pdf.splitTextToSize(response, maxWidth);
 
     // Loop through each line and add it to the document
-    lines.forEach((line, index) => {
+    lines.forEach((line) => {
         // Add new page if the content exceeds the page height
-        if ((y + lineHeight) > (pdf.internal.pageSize.height - 20)) {
+        if ((y + lineHeight) > (pdf.internal.pageSize.height - textMargin)) {
             pdf.addPage();
-            y = 20; // Reset Y position to the top for the new page
+            y = textMargin; // Reset Y position to the top for the new page
         }
 
-        pdf.text(line, 20, y);
+        pdf.text(line, textMargin, y);
         y += lineHeight; // Increment Y position for next line
     });
 
