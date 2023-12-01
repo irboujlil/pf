@@ -103,7 +103,7 @@ export class ChatComponent {
   handlePDF(response: any) {
     const pdf = new jsPDF();
     const pageWidth = pdf.internal.pageSize.getWidth();
-    const desiredHeight = 30; // Set the desired height for the logo
+    const desiredHeight = 50; // Set the desired height for the logo
     const aspectRatio = 1920 / 1080; // Aspect ratio of the original image
     const desiredWidth = desiredHeight * aspectRatio;
     const logoMargin = 15; // Margin from top and left
