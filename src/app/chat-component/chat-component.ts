@@ -76,6 +76,7 @@ export class ChatComponent {
             // ...
           }).catch(error => {
             console.error("Error during file conversion: ", error);
+            this.messages.push({ content: `Error during file conversion: ${error.message}`, sent: false, isImage: false });
           });
         } else if(file.type.match(/pdf.*/)) {
           console.log("PDF HERE");
