@@ -7,11 +7,16 @@ import { RouterModule } from '@angular/router';
 import { ChatComponent } from './chat-component/chat-component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from 'src/environments/environment';
+import { AuthService } from './service/auth.service';
+import { AuthComponent } from './auth-component/auth.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        ChatComponent
+        ChatComponent,
+        AuthComponent
         // ... other declarations
       ],
     imports: [
@@ -20,9 +25,10 @@ import { FormsModule } from '@angular/forms';
         HttpClientModule,
         RouterModule,
         AppRoutingModule,
-        FormsModule
+        FormsModule,
+        AngularFireModule.initializeApp(environment.firebaseConfig)
     ],
-    providers: [HttpClientModule,  DataService],
+    providers: [HttpClientModule,  DataService, AuthService],
     bootstrap: [AppComponent]
   // declarations, providers, bootstrap...
 })

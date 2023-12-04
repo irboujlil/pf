@@ -180,27 +180,31 @@
   }
 </style>
 
-<main class="main">
-  <div class="content">
-    <div class="left-side">
-<video autoplay loop muted class="video-logo">
-  <source src="assets/movingOwl.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-      <h1>{{ title }}</h1>
-      
-    </div>
+<!-- This is the app.component.html -->
+<header class="header">
+  <div class="left-side">
+    <video autoplay loop muted class="video-logo">
+      <source src="assets/movingOwl.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <h1>{{ title }}</h1>
   </div>
-</main>
+  <div *ngIf="authService.isLoggedIn | async as user" class="right-side">
+    <i class="fas fa-solid fa-user"></i>
+    <span>{{ user.displayName }}</span>
+    <button (click)="authService.signOut()">Sign Out</button>
+  </div>
+</header>
 
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<div *ngIf="authService.isLoggedIn | async; else showAuth">
+  <!-- The chat component will be displayed here when the user is logged in -->
+  <app-chat-component></app-chat-component>
+</div>
+
+<!-- If the user is not logged in, the auth component will be displayed instead -->
+<ng-template #showAuth>
+  <app-auth></app-auth>
+</ng-template>
 
 
-<router-outlet></router-outlet>
+
