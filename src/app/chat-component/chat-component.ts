@@ -83,14 +83,13 @@ export class ChatComponent {
           this.fileToBase64(file).then(base64 => {
             const fileName = file.name;
             this.isTyping = true;
-            // Add each image to the messages array
             this.openAIService.sendFile(fileName, base64).subscribe((response: any) => {
-              this.handlePDF(response);
+              this.pollForTaskCompletion(response.task_id); // Poll for task completion
             })
-            this.messages.push({ content: "Analyzing file...", sent: true, isImage: false });
-            // Send each image to the server
+            this.messages.push({ content: "Processing file...please check back in a bit", sent: true, isImage: false });
             // ...
-          }).catch(error => {
+          })
+          .catch(error => {
             console.error("Error during file conversion: ", error);
             this.messages.push({ content: `Error during file conversion: ${error.message}`, sent: false, isImage: false });
           });
@@ -101,6 +100,29 @@ export class ChatComponent {
         }
       });
     }
+  }
+
+  pollForTaskCompletion(taskId: string) {
+    const interval = setInterval(() => {
+      this.openAIService.checkTaskStatus(taskId).subscribe((taskResponse: any) => {
+        if (taskResponse.status === 'success') {
+          clearInterval(interval);
+          this.handlePDF(taskResponse.result); // Handle the PDF processing result
+          this.isTyping = false;
+        } else if (taskResponse.status === 'failure') {
+          clearInterval(interval);
+          console.error("Error processing file: ", taskResponse.error);
+          this.messages.push({ content: `Error processing file: ${taskResponse.error}`, sent: false, isImage: false });
+          this.isTyping = false;
+        }
+        // Optionally handle 'pending' status
+      }, error => {
+        clearInterval(interval);
+        console.error("Error checking task status: ", error);
+        this.messages.push({ content: `Error checking task status: ${error.error}`, sent: false, isImage: false });
+        this.isTyping = false;
+      });
+    }, 5000); // Poll every 3 seconds
   }
 
   handlePDF(response: any) {
