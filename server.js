@@ -12,7 +12,7 @@ const app = express();
 
 app.use(requireHTTPS);
 app.use(cors({
-    origin: 'https://www.pocketprofessor.io/' // or '*' for allowing all origins
+    origin: '*' // or '*' for allowing all origins
 }));
 app.use(express.static('./dist/angular-heroku'));
 
