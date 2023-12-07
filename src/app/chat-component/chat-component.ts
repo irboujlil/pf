@@ -67,9 +67,10 @@ export class ChatComponent {
             this.isTyping = true;
             // Add each image to the messages array
             this.openAIService.sendFile(fileName, base64).subscribe((response: any) => {
-              this.messages.push({ content: response, sent: false, isImage: false });
+              this.pollForTaskCompletion(response.task_id);
+              //this.messages.push({ content: response, sent: false, isImage: false });
               //console.log(response)
-              this.isTyping = false
+              
             })
             this.messages.push({ content: base64, sent: true, isImage: true });
             // Send each image to the server
